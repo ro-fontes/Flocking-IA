@@ -17,11 +17,23 @@ public class Flock : MonoBehaviour
 
     void Update()
     {
+        //limitando a distancia entre os peixes com o bounds
         Bounds b = new Bounds(myManager.transform.position, myManager.swinLimits * 2);
 
+        //criando um raycast
+        RaycastHit hit = new RaycastHit();
+        Vector3 direction = myManager.transform.position - transform.position;
+
+        //verificando se o peixe colidir 
         if (!b.Contains(transform.position))
         {
             turnig = true;
+            direction = myManager.transform.position - transform.position;
+        }
+        else if(Physics.Raycast(transform.position, this.transform.forward * 50, out hit))
+        {
+            turnig = true;
+            direction = Vector3.Reflect(this.transform.forward, hit.normal);
         }
         else
         {
@@ -30,7 +42,6 @@ public class Flock : MonoBehaviour
 
         if (turnig)
         {
-            Vector3 direction = myManager.transform.position - transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), myManager.rotationSpeed * Time.deltaTime);
         }
         else
@@ -86,7 +97,7 @@ public class Flock : MonoBehaviour
                 }
             }
         }
-
+        //verifica se o grupo de peixes for maior que 0 
         if(groupSize > 0)
         {
             vcentre = vcentre / groupSize + (myManager.goalPos - this.transform.position);

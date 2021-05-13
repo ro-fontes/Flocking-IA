@@ -34,7 +34,7 @@ public class FlockManager : MonoBehaviour
             allFish[i] = Instantiate(fishPrefabs, pos, Quaternion.identity);
             allFish[i].GetComponent<Flock>().myManager = this;
         }
-        //
+        //posicionamento que se encontra os peixes
         goalPos = this.transform.position;
     }
     private void Update()
